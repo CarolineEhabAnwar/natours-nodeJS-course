@@ -11,6 +11,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const csp = require('express-csp');
+const compression = require('compression');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -27,24 +28,6 @@ app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet());
-// app.use(
-//   helmet.contentSecurityPolicy({
-//     directives: {
-//       defaultSrc: ["'self'"],
-//       connectSrc: [
-//         "'self'",
-//         'ws://localhost:10908',
-//         'http://127.0.0.1:3000',
-//         'ws://localhost:4904',
-//         'ws://localhost:7160/',
-//         'https://*.tiles.mapbox.com',
-//         'https://api.mapbox.com',
-//         'https://events.mapbox.com',
-//         'ws://localhost:12679/',
-//       ],
-//     },
-//   })
-// );
 
 app.use(
   cors({
@@ -52,15 +35,6 @@ app.use(
     credentials: true,
   })
 );
-
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', req.headers.origin);
-//   res.header(
-//     'Access-Control-Allow-Headers',
-//     'Origin, X-Requested-With, Content-Type, Accept'
-//   );
-//   next();
-// });
 
 app.use(helmet());
 csp.extend(app, {
@@ -163,6 +137,8 @@ app.use(
     ],
   })
 );
+
+app.use(compression());
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
