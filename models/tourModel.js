@@ -159,11 +159,6 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-// tourSchema.post(/^find/, (docs, next) => {
-//   console.log(docs);
-//   next();
-// });
-
 // tourSchema.pre('aggregate', function (next) {
 //   this.pipeline().unshift({
 //     $match: {
