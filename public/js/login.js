@@ -21,7 +21,7 @@ export const login = async (email, password) => {
 
 export const logout = async () => {
   axios
-    .get('api/v1/users/logout')
+    .get('/api/v1/users/logout')
     .then(function (res) {
       if (res.data.status === 'success') {
         location.reload(true);
