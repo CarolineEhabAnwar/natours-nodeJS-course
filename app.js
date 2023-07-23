@@ -9,7 +9,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-// const cors = require('cors');
+const cors = require('cors');
 const csp = require('express-csp');
 const compression = require('compression');
 
@@ -23,11 +23,11 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+app.enable('trust proxy');
+
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use(helmet());
 
 // app.use(
 //   cors({
@@ -36,7 +36,12 @@ app.use(helmet());
 //   })
 // );
 
+app.use(cors());
+
+app.options('*', cors());
+
 app.use(helmet());
+
 csp.extend(app, {
   policy: {
     directives: {
@@ -92,7 +97,7 @@ csp.extend(app, {
         'unsafe-inline',
         'data:',
         'blob:',
-        // 'wss://<HEROKU-SUBDOMAIN>.herokuapp.com:<PORT>/',
+        'https://natours-nodejs-course.onrender.com/',
         'https://*.stripe.com',
         'https://*.mapbox.com',
         'https://*.cloudflare.com/',
